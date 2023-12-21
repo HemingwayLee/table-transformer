@@ -1,3 +1,14 @@
+# Run it locally
+```
+docker build -f inference.dockerfile -t mytbltr .
+docker run -it --rm -v $(pwd):/home/proj/ mytbltr
+```
+
+* inside docker
+```
+python inference.py --mode detect --detection_config_path detection_config.json --detection_model_path /home/proj/models/pubtables1m_detection_detr_r18.pth --detection_device cpu --image_dir /home/proj/images/ --out_dir /home/proj/output/ -o --crop_padding 20
+```
+
 # Table Transformer (TATR)
 
 A deep learning model based on object detection for extracting tables from PDFs and images.
