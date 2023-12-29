@@ -12,11 +12,11 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh &
 
 ENV PATH /opt/miniconda3/bin:$PATH
 
-COPY environment.yml .
+COPY environment.train.yml .
 
 RUN pip install --upgrade pip && \
     conda update -n base -c defaults conda && \
-    conda env create -n venv -f environment.yml && \
+    conda env create -n venv -f environment.train.yml && \
     conda init && \
     echo "conda activate venv" >> ~/.bashrc
 
