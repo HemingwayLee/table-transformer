@@ -1,13 +1,14 @@
 name: tables-detr
 channels:
- - conda-forge
+ - nvidia
  - pytorch
  - defaults
+ - conda-forge
 dependencies:
   - python==3.10.9
   - pip
   - pytorch==1.13.1
-  - cudatoolkit==11.8.0
+  - cudatoolkit==11.6.0
   - torchvision==0.14.1
   - pandas==1.5.3
   - scikit-learn==1.2.1

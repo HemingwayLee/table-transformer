@@ -1,12 +1,27 @@
-# Run it locally
+# Run inference locally
 ```
 docker build -f inference.dockerfile -t mytbltr .
 docker run -it --rm -v $(pwd):/home/proj/ mytbltr
 ```
 
-* inside docker
+* run inference inside docker without gpu
 ```
 python inference.py --mode detect --detection_config_path detection_config.json --detection_model_path /home/proj/models/pubtables1m_detection_detr_r18.pth --detection_device cpu --image_dir /home/proj/images/ --out_dir /home/proj/output/ -o --crop_padding 20
+```
+
+# Train
+* pytorch version and cudatoolkit version should be the same, otherwise it will have some issues
+
+```
+docker build -f train.dockerfile -t mytbltr .
+docker run -it --rm --gpus all -v $(pwd):/home/proj/ mytbltr
+```
+
+* run inference inside docker with gpu
+```
+```
+python inference.py --mode detect --detection_config_path detection_config.json --detection_model_path /home/proj/models/pubtables1m_detection_detr_r18.pth --image_dir /home/proj/images/ --out_dir /home/proj/output/ -o --crop_padding 20
+```
 ```
 
 # Table Transformer (TATR)
