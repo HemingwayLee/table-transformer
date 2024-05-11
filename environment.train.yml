@@ -23,3 +23,5 @@ dependencies:
     - scikit-image==0.20.0
     - scipy==1.10.1
     - PyMuPDF==1.21.1
+    - tensorboard
+
