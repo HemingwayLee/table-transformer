@@ -1,4 +1,4 @@
-# Run inference locally
+# Run inference locally without GPU
 ```
 docker build -f inference.dockerfile -t mytbltr .
 docker run -it --rm -v $(pwd):/home/proj/ mytbltr
@@ -9,7 +9,7 @@ docker run -it --rm -v $(pwd):/home/proj/ mytbltr
 python inference.py --mode detect --detection_config_path detection_config.json --detection_model_path /home/proj/models/pubtables1m_detection_detr_r18.pth --detection_device cpu --image_dir /home/proj/images/ --out_dir /home/proj/output/ -o --crop_padding 20
 ```
 
-# Train
+# Operations with GPU (e.g. Train or Inference)
 * pytorch version and cudatoolkit version should be the same, otherwise it will have some issues
 
 ```
@@ -19,10 +19,16 @@ docker run -it --rm --gpus all -v $(pwd):/home/proj/ mytbltr
 
 * run inference inside docker with gpu
 ```
-```
 python inference.py --mode detect --detection_config_path detection_config.json --detection_model_path /home/proj/models/pubtables1m_detection_detr_r18.pth --image_dir /home/proj/images/ --out_dir /home/proj/output/ -o --crop_padding 20
 ```
-```
+
+## Note
+* If it is a security VM environment, we need to download `resnet18-f37072fd.pth` and scp to the server
+  * `mkdir -p /root/.cache/torch/hub/checkpoints/`
+  * `cp resnet18-f37072fd.pth /root/.cache/torch/hub/checkpoints/`
+* If the memory size is not big enough, use `--shm-size` option
+  * `docker run -it --rm --shm-size=2gb --gpus all -v $(pwd):/home/proj/ mytbltr`
+
 
 # Table Transformer (TATR)
 
