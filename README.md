@@ -22,6 +22,11 @@ docker run -it --rm --gpus all -v $(pwd):/home/proj/ mytbltr
 python inference.py --mode detect --detection_config_path detection_config.json --detection_model_path /home/proj/models/pubtables1m_detection_detr_r18.pth --image_dir /home/proj/images/ --out_dir /home/proj/output/ -o --crop_padding 20
 ```
 
+* Run training inside docker with gpu
+```
+python main.py --data_type detection --config_file detection_config.json --data_root_dir /home/proj/data --model_load_path /home/proj/pubtables1m_detection_detr_r18.pth --model_save_dir /home/proj/saved_model/ --load_weights_only
+```
+
 ## Note
 * If it is a security VM environment, we need to download `resnet18-f37072fd.pth` and scp to the server
   * `mkdir -p /root/.cache/torch/hub/checkpoints/`
