@@ -8,11 +8,12 @@ import sys
 from typing import Iterable
 
 import torch
-
+from torch.utils.tensorboard import SummaryWriter
 import util.misc as utils
 from datasets.coco_eval import CocoEvaluator
 from datasets.panoptic_eval import PanopticEvaluator
 
+writer = SummaryWriter()
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
@@ -26,6 +27,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
     header = 'Epoch: [{}]'.format(epoch)
     
     batch_count = 0
+    final_loss = -1
     for samples, targets in metric_logger.log_every(data_loader, print_freq, header):
         batch_count += 1
         if not max_batches_per_epoch is None and batch_count > max_batches_per_epoch:
@@ -47,6 +49,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         losses_reduced_scaled = sum(loss_dict_reduced_scaled.values())
 
         loss_value = losses_reduced_scaled.item()
+        final_loss = loss_value
 
         if not math.isfinite(loss_value):
             print("Loss is {}, stopping training".format(loss_value))
@@ -65,6 +68,9 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
     # gather the stats from all processes
     metric_logger.synchronize_between_processes()
     print("Averaged stats:", metric_logger)
+
+    writer.add_scalar('Loss/train', final_loss, epoch)
+
     return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
 
 
